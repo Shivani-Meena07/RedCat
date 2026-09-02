@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@500;700;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --space: #050816;
+  --midnight: #0b1026;
+  --panel: #10192f;
+  --panel-2: #16213a;
+  --line: #5e6d89;
+  --soft-line: #2e3b55;
+  --text: #f7fbff;
+  --muted: #a8b7d4;
+  --crimson: #c73a4a;
+  --crimson-2: #ff596a;
+  --blue: #4da6ff;
+  --lavender: #b57dff;
+  --gold: #ffd54a;
+  --green: #57d67a;
+  --shadow: #02040c;
+  --font-pixel: "Courier New", "Lucida Console", monospace;
+  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+  --font-display: "Space Grotesk", sans-serif;
+}
+
+/* Custom Background CSS components requested by the user */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+  z-index: -2;
+}
+
+.pixel-sky {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  pointer-events: none;
+  overflow: hidden;
+  background: linear-gradient(180deg, #180921 0%, #32133d 20%, #61244e 42%, #b94a68 58%, #21142e 74%, #070914 100%);
+}
+
+.pixel-sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5,8,22,0.14), rgba(5,8,22,0.78) 58%, rgba(5,8,22,0.96));
+}
+
+.sky-star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #f0e6f8;
+  box-shadow: 30px 42px 0 #ffd54a, 98px -12px 0 #fff, 160px 30px 0 #b57dff, 220px 4px 0 #f0e6f8;
+  animation: twinkle 2s infinite alternate;
+}
+
+.s1 { left: 8%; top: 11%; }
+.s2 { left: 48%; top: 7%; animation-delay: 0.7s; }
+.s3 { left: 79%; top: 15%; animation-delay: 1.2s; }
+
+@keyframes twinkle {
+  from { opacity: 0.25; }
+  to { opacity: 1; }
+}
+
+.pixel-sun {
+  position: absolute;
+  right: 16%;
+  top: 13%;
+  width: 44px;
+  height: 44px;
+  background: var(--gold);
+  box-shadow: 0 -8px 0 #f5c840, 8px 0 0 #f5c840, 0 8px 0 #f5c840, -8px 0 0 #f5c840, 0 0 34px rgba(255,213,74,0.55);
+}
+
+.pixel-moon {
+  position: absolute;
+  left: 9%;
+  top: 9%;
+  width: 30px;
+  height: 30px;
+  background: #d4c5f0;
+  box-shadow: 8px 0 0 #32133d;
+}
+
+.pixel-cloud {
+  position: absolute;
+  width: 96px;
+  height: 30px;
+  background:
+    linear-gradient(#e0cff0 0 0) 0 12px / 16px 16px,
+    linear-gradient(#e0cff0 0 0) 16px 6px / 16px 16px,
+    linear-gradient(#e0cff0 0 0) 32px 0 / 16px 16px,
+    linear-gradient(#e0cff0 0 0) 48px 6px / 16px 16px,
+    linear-gradient(#e0cff0 0 0) 64px 12px / 16px 16px;
+  background-repeat: no-repeat;
+  opacity: 0.72;
+  animation: cloudFloat 28s linear infinite;
+}
+
+.c1 { top: 24%; left: -120px; }
+.c2 { top: 34%; left: -200px; animation-delay: -13s; animation-duration: 38s; }
+
+@keyframes cloudFloat {
+  to { transform: translateX(calc(100vw + 260px)); }
+}
+
+.mountain {
+  position: absolute;
+  bottom: 0;
+  width: 44vw;
+  height: 42vh;
+  image-rendering: pixelated;
+  clip-path: polygon(0 100%, 10% 78%, 18% 78%, 18% 64%, 28% 64%, 28% 48%, 38% 48%, 38% 32%, 50% 32%, 50% 18%, 62% 32%, 62% 48%, 72% 48%, 72% 64%, 82% 64%, 82% 78%, 92% 78%, 100% 100%);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.16) 0 18%, transparent 18%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.14) 0 12px, transparent 12px 24px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 12px, transparent 12px 24px),
+    #6e5f59;
+}
+
+.m1 { left: -5vw; background-color: #744b55; }
+.m2 { left: 27vw; width: 48vw; height: 48vh; background-color: #85736c; }
+.m3 { right: -6vw; background-color: #5f5268; }
+
+.block-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 58px;
+  background:
+    repeating-linear-gradient(90deg, #5a8a2e 0 28px, #477324 28px 56px),
+    linear-gradient(#5a8a2e, #8b5e3c);
+  box-shadow: 0 -8px 0 rgba(123,196,65,0.75), 0 -16px 34px rgba(5,8,22,0.38);
+}
+
+/* Custom Minecraft Theme Button Styling matching the mockup image */
+.minecraft-btn {
+  font-family: var(--font-mono);
+  box-shadow: 
+    inset -4px -4px 0 0 rgba(0, 0, 0, 0.4), 
+    inset 4px 4px 0 0 rgba(255, 255, 255, 0.3),
+    0 4px 0 0 rgba(0, 0, 0, 0.82);
+  text-shadow: 2px 2px 0 #050505;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #7d7d7d #1a1a1a #1a1a1a #7d7d7d;
+  image-rendering: pixelated;
+}
+
+.minecraft-btn:hover {
+  background-color: #8c8c8c !important;
+  color: #facc15 !important;
+}
+
+.minecraft-btn:active {
+  box-shadow: 
+    inset -2px -2px 0 0 rgba(0, 0, 0, 0.5), 
+    inset 2px 2px 0 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(2px);
+}
+
+.input-minecraft {
+  font-family: var(--font-mono);
+  border-width: 2px;
+  border-style: solid;
+  border-color: #1a1a1a #7d7d7d #7d7d7d #1a1a1a;
+  image-rendering: pixelated;
+}
+
+/* Beautiful custom transition animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.25), 0 0 20px rgba(239, 68, 68, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.65), 0 0 40px rgba(239, 68, 68, 0.15);
+  }
+}
+
+.animate-pulse {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: float 4s infinite ease-in-out;
+}
+
+/* REDCAT MASCOT CUSTOMIZER STYLE DECLARATIONS */
+.creator-mascot {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: linear-gradient(135deg, var(--crimson), #f29f6b);
+  border: 4px solid #351019;
+  box-shadow: 0 0 0 3px #e9f2ff;
+  color: white;
+  font: 900 0.95rem var(--font-pixel);
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.creator-mascot:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 3px #e9f2ff, 0 0 22px rgba(255,213,74,0.45);
+}
+
+.mascot-hair,
+.mascot-face,
+.mascot-outfit,
+.mascot-label {
+  position: absolute;
+  display: block;
+}
+
+.mascot-hair {
+  top: 8px;
+  left: 18px;
+  width: 28px;
+  height: 15px;
+  background: #2b1520;
+  clip-path: polygon(0 100%, 12% 20%, 30% 100%, 48% 0, 66% 100%, 84% 20%, 100% 100%);
+  z-index: 5;
+}
+
+.mascot-face {
+  top: 18px;
+  left: 17px;
+  width: 30px;
+  height: 24px;
+  background: #f0b09a;
+  border: 3px solid #7a3c34;
+  z-index: 3;
+}
+
+.mascot-outfit {
+  bottom: 8px;
+  left: 12px;
+  width: 40px;
+  height: 22px;
+  background: var(--crimson);
+  border: 3px solid #391019;
+  z-index: 4;
+}
+
+.mascot-label {
+  inset: auto 0 7px;
+  z-index: 2;
+  text-align: center;
+  font-size: 0.72rem;
+  text-shadow: 2px 2px 0 var(--shadow);
+}
+
+.skin-rose .mascot-face { background: #f0b09a; }
+.skin-gold .mascot-face { background: #f1c36d; }
+.skin-moon .mascot-face { background: #d7e2f2; border-color: #758399; }
+
+.clothes-crimson .mascot-outfit { background: var(--crimson); }
+.clothes-blue .mascot-outfit { background: var(--blue); border-color: #123d63; }
+.clothes-green .mascot-outfit { background: var(--green); border-color: #1f4a2c; }
+
+.hair-tuft .mascot-hair {
+  clip-path: polygon(0 100%, 12% 20%, 30% 100%, 48% 0, 66% 100%, 84% 20%, 100% 100%);
+}
+
+.hair-bob .mascot-hair {
+  left: 14px;
+  width: 36px;
+  height: 20px;
+  clip-path: inset(0 0 0 0);
+}
+
+.hair-spikes .mascot-hair {
+  top: 5px;
+  left: 12px;
+  width: 42px;
+  height: 19px;
+  clip-path: polygon(0 100%, 10% 0, 22% 100%, 34% 0, 48% 100%, 62% 0, 76% 100%, 90% 0, 100% 100%);
+}
+

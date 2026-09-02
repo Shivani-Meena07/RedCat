@@ -1,0 +1,6 @@
+{
+  "name": "RedCat Command Center",
+  "description": "Stunning Minecraft-styled retro dashboard with sound brand integration, live event notification tick, conversational AI matching brief generators, and verified milestone escrows.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

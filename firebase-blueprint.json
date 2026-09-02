@@ -1,0 +1,55 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile containing role, biography, niche information, and customized voxel mascots.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["Creator", "Brand", "Admin"] },
+        "fullName": { "type": "string" },
+        "niche": { "type": "string" },
+        "bio": { "type": "string" },
+        "mascotSkin": { "type": "string", "enum": ["rose", "gold", "moon"] },
+        "mascotClothes": { "type": "string", "enum": ["crimson", "blue", "green"] },
+        "mascotHair": { "type": "string", "enum": ["tuft", "bob", "spikes"] },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["uid", "email", "role", "fullName", "createdAt"]
+    },
+    "CampaignReview": {
+      "title": "CampaignReview",
+      "description": "Dual-sided mutual feedback rating campaign checkpoints or milestones.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "campaignId": { "type": "string" },
+        "campaignTitle": { "type": "string" },
+        "reviewerRole": { "type": "string", "enum": ["Creator", "Brand", "Admin"] },
+        "reviewerUid": { "type": "string" },
+        "reviewerName": { "type": "string" },
+        "revieweeUid": { "type": "string" },
+        "revieweeName": { "type": "string" },
+        "rating1": { "type": "number", "description": "Quality or Clarity score (1-5)" },
+        "rating2": { "type": "number", "description": "Communication or Responsiveness score (1-5)" },
+        "rating3": { "type": "number", "description": "Timeline or Professionalism score (1-5)" },
+        "averageRating": { "type": "number" },
+        "comments": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "campaignId", "campaignTitle", "reviewerRole", "reviewerUid", "rating1", "rating2", "rating3", "averageRating", "comments", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles stored by uid"
+    },
+    "/campaign_reviews/{reviewId}": {
+      "schema": "CampaignReview",
+      "description": "Verified milestone feedback reviews"
+    }
+  }
+}

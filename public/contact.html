@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Support Matrix | RedCat AI Operating System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #09090b;
+            --surface-card: #121217;
+            --surface-hover: #181822;
+            --text-primary: #f4f4f5;
+            --text-secondary: #a1a1aa;
+            --accent-red: #ff4a5a;
+            --accent-glow: rgba(255, 74, 90, 0.15);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient glows */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(255, 74, 90, 0.08) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.05) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1000px;
+            padding: 60px 24px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .tagline {
+            font-family: var(--font-display);
+            color: var(--accent-red);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .header-section h1 {
+            font-family: var(--font-sans);
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .header-section h1 span {
+            position: relative;
+            white-space: nowrap;
+            color: #fff;
+        }
+
+        .header-section h1 span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 4px;
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 74, 90, 0.2);
+            z-index: -1;
+        }
+
+        .header-section p {
+            color: var(--text-secondary);
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            max-width: 640px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Matrix container layout */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .matrix-grid {
+                grid-template-columns: 1fr 1.2fr;
+            }
+        }
+
+        .card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            border-left: 4px solid var(--accent-red);
+            padding-left: 12px;
+        }
+
+        .support-channels {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .channel-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .channel-item:hover {
+            background: var(--surface-hover);
+            border-color: rgba(255, 74, 90, 0.15);
+            transform: translateX(4px);
+        }
+
+        .channel-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .channel-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Form styling */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            background-color: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: #fff;
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 15px rgba(255, 74, 90, 0.1);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background-color: var(--accent-red);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 14px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 20px rgba(255, 74, 90, 0.15);
+        }
+
+        .submit-btn:hover {
+            background-color: #ff5f6e;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(255, 74, 90, 0.25);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-banner {
+            display: none;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .navigation-banner {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent-red);
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <header class="header-section">
+        <span class="tagline">Support Matrix</span>
+        <h1>Establish <span>Contact Connection</span></h1>
+        <p>Connect with RedCat Operating System support, engineering representatives, and technical coordinators.</p>
+    </header>
+
+    <div class="matrix-grid">
+        <div class="card">
+            <h2 class="card-title">Support Matrix Node</h2>
+            <div class="support-channels">
+                <div class="channel-item">
+                    <div class="channel-name">💻 Tech Dev Node</div>
+                    <div class="channel-desc">Consult with lead system designers and executive creators who spearhead the escrow pipelines.</div>
+                </div>
+                <div class="channel-item">
+                    <div class="channel-name">📡 Escrow Fault Resolution</div>
+                    <div class="channel-desc">Submit bids, verify transaction records, or release sandbox tier credentials instantly.</div>
+                </div>
+                <div class="channel-item">
+                    <div class="channel-name">🔒 Security Oversight</div>
+                    <div class="channel-desc">Analyze and authenticate secure cryptographic wallet nodes and credential sessions.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Direct Messaging Pipe</h2>
+            
+            <div id="successBanner" class="success-banner">
+                ✔ Connection Established! Message relayed to RedCat Support Core.
+            </div>
+
+            <form id="contactForm" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="name">Identifier (Full Name)</label>
+                    <input type="text" id="name" required class="form-control" placeholder="Identify yourself...">
+                </div>
+                <div class="form-group">
+                    <label for="email">Comms Address (Email)</label>
+                    <input type="email" id="email" required class="form-control" placeholder="name@domain.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Transmission Core (Message)</label>
+                    <textarea id="message" required class="form-control" placeholder="Type your message details here..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Transmit Message</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="navigation-banner">
+        <a href="/" class="back-link">
+            <span>← Return to System Terminal</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    function handleSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const banner = document.getElementById('successBanner');
+        
+        btn.disabled = true;
+        btn.innerText = "Transmitting...";
+        
+        setTimeout(() => {
+            banner.style.display = "block";
+            document.getElementById('contactForm').reset();
+            btn.disabled = false;
+            btn.innerText = "Transmit Message";
+            
+            setTimeout(() => {
+                banner.style.display = "none";
+            }, 5000);
+        }, 1200);
+    }
+</script>
+
+</body>
+</html>

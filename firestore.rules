@@ -1,0 +1,81 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Global default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- REUSABLE SECURITY PRIMITIVES ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isEmailVerified() {
+      return request.auth.token.email_verified == true;
+    }
+
+    // --- VALIDATION HELPER BLUEPRINTS ---
+    function isValidUserProfile(data) {
+      return data.uid is string && data.uid.size() <= 128 &&
+             data.email is string && data.email.size() <= 128 &&
+             data.role is string && (data.role == 'Creator' || data.role == 'Brand' || data.role == 'Admin') &&
+             data.fullName is string && data.fullName.size() <= 128 &&
+             (!data.keys().hasAny(['bio']) || (data.bio is string && data.bio.size() <= 500)) &&
+             (!data.keys().hasAny(['niche']) || (data.niche is string && data.niche.size() <= 128)) &&
+             (!data.keys().hasAny(['mascotSkin']) || (data.mascotSkin is string && (data.mascotSkin == 'rose' || data.mascotSkin == 'gold' || data.mascotSkin == 'moon'))) &&
+             (!data.keys().hasAny(['mascotClothes']) || (data.mascotClothes is string && (data.mascotClothes == 'crimson' || data.mascotClothes == 'blue' || data.mascotClothes == 'green'))) &&
+             (!data.keys().hasAny(['mascotHair']) || (data.mascotHair is string && (data.mascotHair == 'tuft' || data.mascotHair == 'bob' || data.mascotHair == 'spikes')));
+    }
+
+    function isValidCampaignReview(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.campaignId is string && data.campaignId.size() <= 128 &&
+             data.campaignTitle is string && data.campaignTitle.size() <= 200 &&
+             data.reviewerRole is string && (data.reviewerRole == 'Creator' || data.reviewerRole == 'Brand' || data.reviewerRole == 'Admin') &&
+             data.reviewerUid is string && data.reviewerUid.size() <= 128 &&
+             data.reviewerUid == request.auth.uid &&
+             data.reviewerName is string && data.reviewerName.size() <= 128 &&
+             data.revieweeUid is string && data.revieweeUid.size() <= 128 &&
+             data.revieweeName is string && data.revieweeName.size() <= 128 &&
+             data.rating1 is number && data.rating1 >= 1 && data.rating1 <= 5 &&
+             data.rating2 is number && data.rating2 >= 1 && data.rating2 <= 5 &&
+             data.rating3 is number && data.rating3 >= 1 && data.rating3 <= 5 &&
+             data.averageRating is number && data.averageRating >= 1 && data.averageRating <= 5 &&
+             data.comments is string && data.comments.size() <= 1000 &&
+             data.timestamp is string && data.timestamp.size() <= 64 &&
+             data.createdAt is number;
+    }
+
+    // --- COLLECTION RULE GROUPS ---
+
+    // USERS COLLECTION
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isOwner(userId) && isValidUserProfile(request.resource.data);
+      allow update: if isOwner(userId) && isValidUserProfile(request.resource.data) &&
+                      request.resource.data.role == resource.data.role &&
+                      request.resource.data.email == resource.data.email &&
+                      request.resource.data.uid == resource.data.uid;
+      allow delete: if false;
+    }
+
+    // CAMPAIGN REVIEWS COLLECTION (DEDICATED FEEDBACK LIFE CYCLE ENTITY)
+    match /campaign_reviews/{reviewId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(reviewId) && isValidCampaignReview(request.resource.data);
+      allow update, delete: if false;
+    }
+  }
+}
